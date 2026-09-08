@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Truck, MapPin, MessageCircle, ArrowRight } from "lucide-react";
+import { Truck, MapPin, MessageCircle, ArrowRight, Leaf } from "lucide-react";
 
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
