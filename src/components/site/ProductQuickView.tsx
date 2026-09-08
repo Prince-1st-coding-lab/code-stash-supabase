@@ -122,7 +122,7 @@ export function ProductQuickView({
                 e.stopPropagation();
                 setZoom(active);
               }}
-              className="absolute right-2 top-2 z-20 rounded-full bg-background/80 p-2 text-foreground opacity-80 transition-opacity hover:bg-background hover:opacity-100"
+              className="absolute bottom-2 right-2 z-20 rounded-full bg-background/80 p-2 text-foreground opacity-80 transition-opacity hover:bg-background hover:opacity-100"
             >
               <ZoomIn className="h-5 w-5" />
             </button>
