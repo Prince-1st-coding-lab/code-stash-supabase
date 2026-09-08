@@ -160,11 +160,10 @@ export function ProductQuickView({
             ) : null}
 
             <div
-              onClick={(e) => e.stopPropagation()}
-              className={`absolute inset-x-0 bottom-0 z-10 max-h-[70%] overflow-y-auto bg-soil/85 p-4 text-card-foreground backdrop-blur-md transition-all duration-300 ease-out sm:p-6 ${
+              className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 max-h-[70%] overflow-y-auto bg-soil/85 p-4 text-card-foreground backdrop-blur-md transition-all duration-300 ease-out sm:p-6 ${
                 overlayVisible
-                  ? "pointer-events-auto translate-y-0 opacity-100"
-                  : "pointer-events-none translate-y-full opacity-0 group-hover:pointer-events-auto group-hover:translate-y-0 group-hover:opacity-100"
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
               }`}
             >
               <div className="flex flex-col gap-3">
