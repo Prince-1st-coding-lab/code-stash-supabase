@@ -168,21 +168,19 @@ export function ProductQuickView({
             ) : null}
 
             {isPots ? (
-              <div className="mt-5 flex rounded-2xl border border-border">
-                {SIZE_OPTIONS.map(({ label, dims }, i) => (
+              <div className="mt-5 grid grid-cols-1 divide-y divide-border rounded-2xl border border-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                {SIZE_OPTIONS.map(({ label, dims }) => (
                   <div
                     key={label}
-                    className={`flex flex-1 flex-col items-center justify-center gap-2 py-5 text-center ${
-                      i !== SIZE_OPTIONS.length - 1 ? "border-r border-border" : ""
-                    }`}
+                    className="flex min-w-0 flex-row items-center justify-between gap-2 px-4 py-4 text-center sm:flex-col sm:justify-center sm:px-3 sm:py-5"
                   >
-                    <span className="rounded-full bg-primary px-5 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary-foreground">
+                    <span className="shrink-0 rounded-full bg-primary px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary-foreground">
                       {label}
                     </span>
-                    <span className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                    <span className="hidden text-xs font-medium uppercase tracking-wide text-muted-foreground sm:inline">
                       Size:
                     </span>
-                    <span className="text-sm font-medium text-foreground">
+                    <span className="min-w-0 text-sm font-medium text-foreground">
                       {dims}
                     </span>
                   </div>
