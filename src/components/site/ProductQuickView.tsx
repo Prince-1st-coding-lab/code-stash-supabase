@@ -92,11 +92,11 @@ export function ProductQuickView({
       aria-modal="true"
       aria-label={item.name}
       onClick={onClose}
-      className="fixed inset-0 z-[100] flex items-center justify-center overflow-y-auto bg-soil/90 p-4 backdrop-blur-sm"
+      className="fixed inset-0 z-[100] flex justify-center overflow-y-auto bg-soil/90 p-4 backdrop-blur-sm"
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative my-8 w-full max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]"
+        className="relative m-auto w-full max-w-3xl overflow-hidden rounded-2xl border border-border bg-card shadow-[var(--shadow-soft)]"
       >
         <button
           type="button"
