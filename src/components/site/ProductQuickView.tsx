@@ -86,8 +86,6 @@ export function ProductQuickView({
     item.size ? ` (${item.size})` : ""
   }`;
 
-  const overlayVisible = showSpecs;
-
   return (
     <div
       role="dialog"
@@ -111,18 +109,11 @@ export function ProductQuickView({
 
         <div className="p-4 sm:p-6">
           <div className="group relative overflow-hidden rounded-2xl">
-            <button
-              type="button"
-              onClick={() => setShowSpecs((s) => !s)}
-              aria-label={`Show details for ${item.name}`}
-              className="block w-full"
-            >
-              <img
-                src={images[active]}
-                alt={`${item.name} photo ${active + 1}`}
-                className="max-h-[70vh] w-full object-contain"
-              />
-            </button>
+            <img
+              src={images[active]}
+              alt={`${item.name} photo ${active + 1}`}
+              className="w-full object-contain"
+            />
 
             <button
               type="button"
@@ -156,58 +147,50 @@ export function ProductQuickView({
                 </button>
               </>
             ) : null}
+          </div>
 
-            <div
-              className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 max-h-[70%] overflow-y-auto bg-soil/85 p-4 text-card-foreground backdrop-blur-md transition-all duration-300 ease-out sm:p-6 ${
-                overlayVisible
-                  ? "translate-y-0 opacity-100"
-                  : "translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
-              }`}
-            >
-              <div className="flex flex-col gap-3">
-                <div>
-                  <h2 className="text-xl text-white sm:text-2xl">{item.name}</h2>
-                  {item.price ? (
-                    <p className="mt-1 font-display text-lg text-gold">{item.price}</p>
-                  ) : null}
-                </div>
-
-                {isPots ? (
-                  <div className="grid grid-cols-1 divide-y divide-white/20 rounded-2xl border border-white/20 bg-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-                    {SIZE_OPTIONS.map(({ label, dims }) => (
-                      <div
-                        key={label}
-                        className="flex min-w-0 flex-row items-center justify-between gap-2 px-3 py-3 text-center sm:flex-col sm:justify-center sm:px-2 sm:py-4"
-                      >
-                        <span className="shrink-0 rounded-full bg-gold px-3 py-1 text-xs font-semibold uppercase tracking-wider text-soil">
-                          {label}
-                        </span>
-                        <span className="hidden text-xs font-medium uppercase tracking-wide text-white/70 sm:inline">
-                          Size:
-                        </span>
-                        <span className="min-w-0 text-sm font-medium text-white">
-                          {dims}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-                ) : null}
-
-                {specs.length ? (
-                  <dl className="space-y-1 border-t border-white/20 pt-2 text-sm text-white/90">
-                    {specs.map((s) => (
-                      <div
-                        key={s.label}
-                        className="grid grid-cols-[5rem_minmax(0,1fr)] gap-2 sm:grid-cols-[7rem_minmax(0,1fr)]"
-                      >
-                        <dt className="text-white/70">{s.label}</dt>
-                        <dd className="min-w-0">{s.value}</dd>
-                      </div>
-                    ))}
-                  </dl>
-                ) : null}
-              </div>
+          <div className="mt-4 flex flex-col gap-3">
+            <div>
+              <h2 className="text-xl sm:text-2xl">{item.name}</h2>
+              {item.price ? (
+                <p className="mt-1 font-display text-lg text-primary">{item.price}</p>
+              ) : null}
             </div>
+
+            {isPots ? (
+              <div className="grid grid-cols-1 divide-y divide-border rounded-2xl border border-border bg-muted/30 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                {SIZE_OPTIONS.map(({ label, dims }) => (
+                  <div
+                    key={label}
+                    className="flex min-w-0 flex-row items-center justify-between gap-2 px-3 py-3 text-center sm:flex-col sm:justify-center sm:px-2 sm:py-4"
+                  >
+                    <span className="shrink-0 rounded-full bg-primary px-3 py-1 text-xs font-semibold uppercase tracking-wider text-primary-foreground">
+                      {label}
+                    </span>
+                    <span className="hidden text-xs font-medium uppercase tracking-wide text-muted-foreground sm:inline">
+                      Size:
+                    </span>
+                    <span className="min-w-0 text-sm font-medium">
+                      {dims}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            ) : null}
+
+            {specs.length ? (
+              <dl className="space-y-1 border-t border-border pt-2 text-sm">
+                {specs.map((s) => (
+                  <div
+                    key={s.label}
+                    className="grid grid-cols-[5rem_minmax(0,1fr)] gap-2 sm:grid-cols-[7rem_minmax(0,1fr)]"
+                  >
+                    <dt className="text-muted-foreground">{s.label}</dt>
+                    <dd className="min-w-0">{s.value}</dd>
+                  </div>
+                ))}
+              </dl>
+            ) : null}
           </div>
 
           {count > 1 ? (
