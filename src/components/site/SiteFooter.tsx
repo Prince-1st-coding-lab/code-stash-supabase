@@ -97,7 +97,7 @@ export function SiteFooter({
         </div>
         <div className="grid grid-cols-2 gap-8 text-sm">
           <div>
-            <p className="font-medium text-foreground">Our Services</p>
+            <p className="font-medium text-foreground">Explore Our Services</p>
             <ul className="mt-3 space-y-2 text-muted-foreground">
               {services.map((s) => (
                 <li key={s.id}>
