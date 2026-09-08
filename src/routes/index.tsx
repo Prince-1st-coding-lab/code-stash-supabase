@@ -1,6 +1,6 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useSuspenseQuery } from "@tanstack/react-query";
-import { Truck, MapPin, MessageCircle, ArrowRight } from "lucide-react";
+import { Truck, MapPin, MessageCircle, ArrowRight, Leaf } from "lucide-react";
 
 import { SiteHeader } from "@/components/site/SiteHeader";
 import { SiteFooter } from "@/components/site/SiteFooter";
@@ -76,25 +76,32 @@ function Index() {
               <ContactMenu settings={settings}>
                 <button
                   type="button"
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-full border border-secondary/40 px-6 py-3 text-sm font-medium text-secondary transition-colors hover:bg-secondary/10"
+                  className="inline-flex w-full items-center justify-start gap-3 rounded-full bg-gold px-6 py-3 text-sm font-medium text-soil transition-transform hover:-translate-y-0.5"
                 >
-                  <MessageCircle className="h-4 w-4" />
-                  Contact Us
+                  <span className="inline-flex w-5 justify-center">
+                    <MessageCircle className="h-4 w-4" />
+                  </span>
+                  <span>Contact Us</span>
                 </button>
               </ContactMenu>
               <Link
                 to="/"
                 hash="services"
-                className="inline-flex w-full items-center justify-center rounded-full border border-secondary/40 px-6 py-3 text-sm font-medium text-secondary transition-colors hover:bg-secondary/10"
+                className="inline-flex w-full items-center justify-start gap-3 rounded-full bg-gold px-6 py-3 text-sm font-medium text-soil transition-transform hover:-translate-y-0.5"
               >
-                Explore Our Services
+                <span className="inline-flex w-5 justify-center">
+                  <Leaf className="h-4 w-4" />
+                </span>
+                <span>Explore Our Services</span>
               </Link>
               <Link
                 to="/shop"
-                className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gold px-6 py-3 text-sm font-medium text-soil transition-transform hover:-translate-y-0.5"
+                className="inline-flex w-full items-center justify-start gap-3 rounded-full bg-gold px-6 py-3 text-sm font-medium text-soil transition-transform hover:-translate-y-0.5"
               >
-                <ArrowRight className="h-4 w-4" />
-                Shop
+                <span className="inline-flex w-5 justify-center">
+                  <ArrowRight className="h-4 w-4" />
+                </span>
+                <span>Shop</span>
               </Link>
             </div>
           </div>
