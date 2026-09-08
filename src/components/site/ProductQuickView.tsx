@@ -1,6 +1,13 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Link } from "@tanstack/react-router";
-import { X, ChevronLeft, ChevronRight, MessageCircle, ExternalLink } from "lucide-react";
+import {
+  X,
+  ChevronLeft,
+  ChevronRight,
+  MessageCircle,
+  ExternalLink,
+  ZoomIn,
+} from "lucide-react";
 
 import { sortImagesByDate, whatsappLink } from "@/lib/site-data";
 import { ImageLightbox } from "@/components/site/ImageLightbox";
@@ -35,10 +42,14 @@ export function ProductQuickView({
 }) {
   const [active, setActive] = useState(0);
   const [zoom, setZoom] = useState<number | null>(null);
+  const [showSpecs, setShowSpecs] = useState(false);
   const images = useMemo(() => sortImagesByDate(item?.images ?? []), [item?.images]);
   const count = images.length;
 
-  useEffect(() => setActive(0), [item?.name, images[0]]);
+  useEffect(() => {
+    setActive(0);
+    setShowSpecs(false);
+  }, [item?.name, images[0]]);
 
   const next = useCallback(() => setActive((i) => (count ? (i + 1) % count : 0)), [count]);
   const prev = useCallback(
@@ -77,6 +88,8 @@ export function ProductQuickView({
     item.size ? ` (${item.size})` : ""
   }`;
 
+  const overlayVisible = showSpecs;
+
   return (
     <div
       role="dialog"
@@ -93,32 +106,45 @@ export function ProductQuickView({
           type="button"
           aria-label="Close"
           onClick={onClose}
-          className="absolute right-3 top-3 z-10 rounded-full bg-background/80 p-2 text-foreground transition-colors hover:bg-background"
+          className="absolute right-3 top-3 z-20 rounded-full bg-background/80 p-2 text-foreground transition-colors hover:bg-background"
         >
           <X className="h-5 w-5" />
         </button>
 
         <div className="p-4 sm:p-6">
-          <div className="relative overflow-hidden rounded-2xl">
+          <div className="group relative overflow-hidden rounded-2xl">
             <button
               type="button"
-              onClick={() => setZoom(active)}
-              aria-label={`Enlarge ${item.name} photo ${active + 1}`}
-              className="block w-full cursor-zoom-in"
+              onClick={() => setShowSpecs((s) => !s)}
+              aria-label={`Show details for ${item.name}`}
+              className="block w-full"
             >
               <img
                 src={images[active]}
                 alt={`${item.name} photo ${active + 1}`}
-                className="h-64 w-full object-cover sm:h-96"
+                className="max-h-[70vh] w-full object-contain"
               />
             </button>
+
+            <button
+              type="button"
+              aria-label={`Enlarge ${item.name} photo ${active + 1}`}
+              onClick={(e) => {
+                e.stopPropagation();
+                setZoom(active);
+              }}
+              className="absolute right-2 top-2 z-20 rounded-full bg-background/80 p-2 text-foreground opacity-80 transition-opacity hover:bg-background hover:opacity-100"
+            >
+              <ZoomIn className="h-5 w-5" />
+            </button>
+
             {count > 1 ? (
               <>
                 <button
                   type="button"
                   aria-label="Previous photo"
                   onClick={prev}
-                  className="absolute left-2 top-1/2 -translate-y-1/2 rounded-full bg-background/80 p-2 transition-colors hover:bg-background"
+                  className="absolute left-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-background/80 p-2 transition-colors hover:bg-background"
                 >
                   <ChevronLeft className="h-5 w-5" />
                 </button>
@@ -126,12 +152,64 @@ export function ProductQuickView({
                   type="button"
                   aria-label="Next photo"
                   onClick={next}
-                  className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full bg-background/80 p-2 transition-colors hover:bg-background"
+                  className="absolute right-2 top-1/2 z-20 -translate-y-1/2 rounded-full bg-background/80 p-2 transition-colors hover:bg-background"
                 >
                   <ChevronRight className="h-5 w-5" />
                 </button>
               </>
             ) : null}
+
+            <div
+              className={`pointer-events-none absolute inset-x-0 bottom-0 z-10 max-h-[70%] overflow-y-auto bg-soil/85 p-4 text-card-foreground backdrop-blur-md transition-all duration-300 ease-out sm:p-6 ${
+                overlayVisible
+                  ? "translate-y-0 opacity-100"
+                  : "translate-y-full opacity-0 group-hover:translate-y-0 group-hover:opacity-100"
+              }`}
+            >
+              <div className="flex flex-col gap-3">
+                <div>
+                  <h2 className="text-xl text-white sm:text-2xl">{item.name}</h2>
+                  {item.price ? (
+                    <p className="mt-1 font-display text-lg text-gold">{item.price}</p>
+                  ) : null}
+                </div>
+
+                {isPots ? (
+                  <div className="grid grid-cols-1 divide-y divide-white/20 rounded-2xl border border-white/20 bg-white/10 sm:grid-cols-3 sm:divide-x sm:divide-y-0">
+                    {SIZE_OPTIONS.map(({ label, dims }) => (
+                      <div
+                        key={label}
+                        className="flex min-w-0 flex-row items-center justify-between gap-2 px-3 py-3 text-center sm:flex-col sm:justify-center sm:px-2 sm:py-4"
+                      >
+                        <span className="shrink-0 rounded-full bg-gold px-3 py-1 text-xs font-semibold uppercase tracking-wider text-soil">
+                          {label}
+                        </span>
+                        <span className="hidden text-xs font-medium uppercase tracking-wide text-white/70 sm:inline">
+                          Size:
+                        </span>
+                        <span className="min-w-0 text-sm font-medium text-white">
+                          {dims}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+                ) : null}
+
+                {specs.length ? (
+                  <dl className="space-y-1 border-t border-white/20 pt-2 text-sm text-white/90">
+                    {specs.map((s) => (
+                      <div
+                        key={s.label}
+                        className="grid grid-cols-[5rem_minmax(0,1fr)] gap-2 sm:grid-cols-[7rem_minmax(0,1fr)]"
+                      >
+                        <dt className="text-white/70">{s.label}</dt>
+                        <dd className="min-w-0">{s.value}</dd>
+                      </div>
+                    ))}
+                  </dl>
+                ) : null}
+              </div>
+            </div>
           </div>
 
           {count > 1 ? (
@@ -159,44 +237,8 @@ export function ProductQuickView({
           ) : null}
 
           <div className="mt-6">
-            <h2 className="text-2xl">{item.name}</h2>
-            {item.price ? (
-              <p className="mt-2 font-display text-lg text-leaf">{item.price}</p>
-            ) : null}
             {item.description ? (
-              <p className="mt-3 text-sm text-muted-foreground">{item.description}</p>
-            ) : null}
-
-            {isPots ? (
-              <div className="mt-5 grid grid-cols-1 divide-y divide-border rounded-2xl border border-border sm:grid-cols-3 sm:divide-x sm:divide-y-0">
-                {SIZE_OPTIONS.map(({ label, dims }) => (
-                  <div
-                    key={label}
-                    className="flex min-w-0 flex-row items-center justify-between gap-2 px-4 py-4 text-center sm:flex-col sm:justify-center sm:px-3 sm:py-5"
-                  >
-                    <span className="shrink-0 rounded-full bg-primary px-4 py-1.5 text-xs font-semibold uppercase tracking-wider text-primary-foreground">
-                      {label}
-                    </span>
-                    <span className="hidden text-xs font-medium uppercase tracking-wide text-muted-foreground sm:inline">
-                      Size:
-                    </span>
-                    <span className="min-w-0 text-sm font-medium text-foreground">
-                      {dims}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            ) : null}
-
-            {specs.length ? (
-              <dl className="mt-5 space-y-2 border-t border-border pt-4 text-sm">
-                {specs.map((s) => (
-                  <div key={s.label} className="grid grid-cols-[7rem_minmax(0,1fr)] gap-2">
-                    <dt className="text-muted-foreground">{s.label}</dt>
-                    <dd className="min-w-0">{s.value}</dd>
-                  </div>
-                ))}
-              </dl>
+              <p className="text-sm text-muted-foreground">{item.description}</p>
             ) : null}
 
             <a
